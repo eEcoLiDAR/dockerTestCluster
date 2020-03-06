@@ -1,0 +1,15 @@
+# The following commands can be issued at a python prompt to setup a
+# SSHCluster on a self-managed cluster of independent machines
+#IPs, usernames, keys, etc. must be adapted
+
+#Alternative setup with dask-ssh is also possible
+
+#Note the first listed IP default to the location of the scheduler. By repeating
+#it a worker can also be started on the scheduler node.
+#---------------------------------------
+
+from dask.distributed import Client, SSHCluster
+
+cluster = SSHCluster(["172.17.0.2", "172.17.0.3", "172.17.0.4"], connect_options={"known_hosts": None, "username":"ubuntu", "client_keys":"/home/ubuntu/mylockey/mock_ubuntu_rsa"},worker_options={"nthreads": 1, "nprocs":2}, scheduler_options={"dashboard_address": ":8787"})
+
+client = Client(cluster)
