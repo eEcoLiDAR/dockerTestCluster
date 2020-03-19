@@ -1,4 +1,6 @@
-# The following commands can be issued at a python prompt to setup a
+
+
+# The following commands can be issued fromn within python to setup a
 # SSHCluster on a self-managed cluster of independent machines
 #IPs, usernames, keys, etc. must be adapted
 

@@ -30,7 +30,7 @@ RUN apt-get update ; \
     wget \
     curl \
     mc \
-    ssh
+    ssh \
     htop \
     locales \
     apt-utils \
