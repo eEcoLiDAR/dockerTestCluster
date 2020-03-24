@@ -25,10 +25,9 @@ RUN apt-get update ; \
     libffi-dev \
     lzma \
     liblzma-dev \
-    python3-dev \
-    python3-setuptools \
     wget \
     curl \
+    git \
     mc \
     ssh \
     htop \
@@ -38,13 +37,6 @@ RUN apt-get update ; \
     iputils-ping ; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ; \
-    mkdir /tmp/Python37 ; \
-    cd /tmp/Python37 ; \
-    wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz ; \
-    tar xvf Python-3.7.0.tar.xz ; \
-    cd /tmp/Python37/Python-3.7.0 ; \
-    ./configure ; \
-    make altinstall ; \
     locale-gen en_US.UTF-8; update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8; \
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config; \
     sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd; \
@@ -53,15 +45,23 @@ RUN apt-get update ; \
     chown ubuntu:ubuntuuser /home/ubuntu/.ssh; chown ubuntu:ubuntuuser /home/ubuntu/.ssh/authorized_keys; \
     sed -i 's/^exit 0/service ssh start\nexit 0/' /etc/rc.local
 
+USER ubuntu
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh ; \
+    bash /tmp/miniconda.sh -b -p $HOME/miniconda ; \
+    rm /tmp/miniconda.sh ; \
+    export PATH="$HOME/miniconda/bin:$PATH" ; \
+    conda init ; \
+    conda config --env --set always_yes true ; \
+    conda install pip pdal python-pdal gdal -c conda-forge ; \
+    pip install "dask[complete]" ; \
+    pip install distributed ; \
+    pip install dask-jobqueue --upgrade ; \
+    pip install asyncssh ; \
+    pip install jupyterlab ; \
+    pip install jupyter-server-proxy ; \
+    pip install git+git://github.com/eEcoLiDAR/lcMacroPipeline@development#egg=lc_macro_pipeline
 
-RUN pip3.7 install --upgrade pip ; \
-    pip3.7 install "dask[complete]" ; \
-    pip3.7 install distributed ; \
-    pip3.7 install dask-jobqueue --upgrade ; \
-    pip3.7 install asyncssh ; \
-    pip3.7 install jupyterlab ; \
-    pip3.7 install jupyter-server-proxy
-
+USER root
 EXPOSE 22
 EXPOSE 8787
 EXPOSE 8888
