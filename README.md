@@ -17,15 +17,17 @@ authentication
 A `root` user and an `ubuntu` user with limited privileges
 are set up. Public keys for both users are added on build.
 
-Python3.7 and Python3-pip are installed and can be accessed
-as `python3.7` and `pip3.7`, respectively. A system version
-of `python3.5` is also available as `python3` but is not
-fully compatible with `Dask`.
+Miniconda3 is installed, and an environment with the default 
+`python3.7` is set up (NOTE: `python3.5` is not
+fully compatible with `Dask`). The `conda` package manager is
+used to install the `pdal` and `gdal` libraries, as well as 
+`pip`. 
 
 A full installation of `Dask` including `distributed`
-and `dask-jobqueue` is included
+and `dask-jobqueue` is included.
 
-`JupyterLab` and `jupyter-proxy-server` are also installed.
+`JupyterLab` and `jupyter-proxy-server` are also installed, together 
+with `lcMacroPipeline` and its dependencies (including `laserchicken`).
 
 ## Container creation
 
